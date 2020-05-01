@@ -1,0 +1,82 @@
+% 
+% for i=1:length(strZmian)
+%     figure()
+%     imshow(strZmian(i).obraz);
+% end
+% for o=1:liczba
+%     if nrBaza<=liczba
+%         zdjecie=im2double(readimage(selpath,nrBaza));
+%         for d=1:length(centroidX)
+%             Jd=double(zdjecie);
+%             kolejka1=[centroidY(d,1),centroidX(d,1)];                  % wstawienie do kolejki punktu startowego
+%             Jsr=Jd(centroidY(d,1),centroidX(d,1));          % pierwotna (lub jedyna) średnia intensywność obiektu
+%             maska1=false(w,k);
+%             Jww=false(w,k);
+%             if zdjecie(centroidX(d,1),centroidY(d,1))>=orgpluca(centroidX(d,1),centroidY(d,1))-0.08 && zdjecie(centroidX(d,1),centroidY(d,1))<=orgpluca(centroidX(d,1),centroidY(d,1))+0.08
+%                 % Procedura rozrostu obszaru
+%                 tic;
+%                 while (~isempty(kolejka1))                              % pętla główna (max. 1s)
+%                         c=kolejka1(1,:);                                   % punkt c ze szczytu kolejki do analizy
+%                         kolejka1=kolejka1(2:size(kolejka1,1),:);           % usunięcie c z kolejki
+%                         if(~maska1(c(1),c(2)))                             % czy punkt nie był jeszcze analizowany?
+%                             maska1(c(1),c(2))=true;                        % odznaczenie punktu c w masce, ...
+%                             if(abs(Jd(c(1),c(2))-Jsr)<=max_dJ)             % czy kryterium włączenia jest spełnione?
+%                                 Jww(c(1),c(2))=true;                       % włączenie punktu c do obiektu
+%                                 sasiedzi=Fun_neighbors(c,w,k,sasiedztwo);  % wyznaczenie indeksów sąsiadów punktu c
+%                                 kolejka1=[   kolejka1;
+%                                             sasiedzi];                     % wstawienie sąsiadów do kolejki
+%                                 l_pix=l_pix+1;                             % inkrementacja licznika pikseli  
+%                             end
+%                         end
+%                 end                 
+%             else
+%                 break;
+%                 
+%             end
+%         end
+%         nrBaza=nrBaza+o;
+%     else
+%         zdjecie=im2double(readimage(selpath,nrBaza1));
+%         zdjMax=max(zdjecie(:));
+%         for i=1:wiersz
+%             for j=1:kolumna
+%                 zdjecie(i,j)=zdjecie(i,j)/zdjMax;
+%             end
+%         end
+%         for d=1:length(centroidX)
+%             Jd=double(zdjecie);
+%             kolejka1=[centroidY(d,1),centroidX(d,1)];                  % wstawienie do kolejki punktu startowego
+%             Jsr=Jd(centroidY(d,1),centroidX(d,1));          % pierwotna (lub jedyna) średnia intensywność obiektu
+%             maska1=false(w,k);
+%             Jww=false(w,k);
+%             if zdjecie(centroidX(d,1),centroidY(d,1))>=orgpluca(centroidX(d,1),centroidY(d,1))-0.08 && zdjecie(centroidX(d,1),centroidY(d,1))<=orgpluca(centroidX(d,1),centroidY(d,1))+0.08
+%                 % Procedura rozrostu obszaru
+%                 tic;
+%                 while (~isempty(kolejka1))                              % pętla główna (max. 1s)
+%                         c=kolejka1(1,:);                                   % punkt c ze szczytu kolejki do analizy
+%                         kolejk1a=kolejka1(2:size(kolejka1,1),:);           % usunięcie c z kolejki
+%                         if(~maska1(c(1),c(2)))                             % czy punkt nie był jeszcze analizowany?
+%                             maska1(c(1),c(2))=true;                        % odznaczenie punktu c w masce, ...
+%                             if(abs(Jd(c(1),c(2))-Jsr)<=max_dJ)             % czy kryterium włączenia jest spełnione?
+%                                 Jww(c(1),c(2))=true;                       % włączenie punktu c do obiektu
+%                                 sasiedzi=Fun_neighbors(c,w,k,sasiedztwo);  % wyznaczenie indeksów sąsiadów punktu c
+%                                 kolejka1=[   kolejka1;
+%                                             sasiedzi];                     % wstawienie sąsiadów do kolejki
+%                                 l_pix=l_pix+1;                             % inkrementacja licznika pikseli  
+%                             end
+%                         end
+%                 end                 
+%             else
+%                 break;
+%                 
+%             end
+%         end
+%         nrBaza1=nrBaza1-1;
+%     end
+%     maska=false(w,k);
+%     str(o).obraz=Jww;
+%     figure()
+%     z=Fun_dispedges(zdjecie,find(bwperim(imdilate(Jww,strel('disk',1)))),Jmax);
+%     imshow(z,[]);   
+%     xlabel('Obraz wraz z potencjalnymi zmianami nowotworowymi');
+% end
